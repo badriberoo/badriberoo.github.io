@@ -1,0 +1,901 @@
+@charset "utf-8";
+/*
+	Badri Beridze — site-specific additions on top of the Resumo template (style.css).
+
+	List of CSS codes:
+
+	00) Colour palette (Tonu template: black + orange)
+	01) Typography (Google Sans everywhere)
+	02) About table (th + td markup)
+	03) Software list ("Soft" tab)
+	04) Contact information
+	05) Magic cursor
+	06) Portfolio (project grid + project modal)
+	07) Clients (white company logos above the portfolio)
+	08) Portfolio filter + Motion / Posters items (4:5, placeholders for now)
+	09) Poster lightbox (zoom from the card, blurred 70% black backdrop)
+	10) Light version
+*/
+
+
+/*------------------------------------------------------------------*/
+/*	00) Colour palette — taken from the Tonu template
+/*	(tonu-next.netlify.app)
+/*
+/*	#e5540a  orange   — accent (labels, active tab, bars, hovers)
+/*	#101010  black    — page background
+/*	#090909  deep black — right panel, overlays
+/*	#171717  surface  — cards, tiles, project modal (neutral, like #101010;
+/*	                    Tonu's #19181d had a blue tint that clashed)
+/*	#202020  border   — card / panel borders
+/*	#2e2e2e  line     — dividers, frames, button outlines
+/*	#676767  muted    — icons, hover lines, cursor ring
+/*	#ffffff  text     — headings and main text
+/*	#919195  text-2   — paragraphs, labels, dates
+/*
+/*	Selectors below mirror style.css so they override it at equal
+/*	specificity, while the template's body.light rules still win.
+/*------------------------------------------------------------------*/
+:root{
+	--c-accent: #e5540a;
+	--c-bg: #101010;
+	--c-bg-deep: #090909;
+	--c-surface: #171717;
+	--c-border: #202020;
+	--c-line: #2e2e2e;
+	--c-muted: #676767;
+	--c-text: #ffffff;
+	--c-text-2: #919195;
+
+	--mc: var(--c-accent);	/* template accent variable */
+}
+/* Base */
+body{
+	background-color: var(--c-bg);
+	color: var(--c-text-2);
+}
+.resumo_fn_nav_overlay{
+	background-color: var(--c-bg-deep);
+}
+h1,h2,h3,h4,h5,h6,
+h1>a,h2>a,h3>a,h4>a,h5>a,h6>a{
+	color: var(--c-text);
+}
+
+/* Text selection: accent orange #e5540a at 70% opacity */
+::selection{
+	background-color: rgba(229,84,10,.7);
+	color: #ffffff;
+}
+::-moz-selection{
+	background-color: rgba(229,84,10,.7);
+	color: #ffffff;
+}
+
+/* Section titles */
+.resumo_fn_main_title .title:after{
+	background-color: var(--c-accent);
+}
+
+/* About table + CV button */
+.resumo_fn_about_info th:nth-child(1){
+	color: var(--c-text-2);
+}
+.resumo_fn_about_info table a{
+	border-bottom-color: var(--c-line);
+}
+.resumo_fn_about_info table a:hover{
+	border-bottom-color: var(--c-accent);
+}
+.resumo_fn_cv_btn a{
+	color: var(--c-text-2);
+	border-color: var(--c-line);
+}
+.resumo_fn_cv_btn a:hover{
+	border-color: var(--c-accent);
+}
+
+/* Tabs + experience/education cards */
+.resumo_fn_tabs .tab_header a{
+	color: var(--c-text-2);
+}
+.resumo_fn_tabs .tab_header .active a{
+	color: var(--mc);
+}
+/* Tab separators: small dots instead of the template's 40px lines */
+.resumo_fn_tabs .tab_header li{
+	display: flex;
+	align-items: center;
+}
+.resumo_fn_tabs .tab_header li:after{
+	float: none;
+	top: auto;
+	width: 6px;
+	height: 6px;
+	margin: 4px 22px 0;	/* 4px top nudges the dot to the text's optical centre */
+	border-radius: 50%;
+	flex-shrink: 0;
+	background-color: var(--c-muted);
+}
+.resumo_fn_boxed_list .item{
+	background-color: var(--c-surface);
+	border-color: var(--c-border);
+}
+.resumo_fn_boxed_list .item:after{
+	background-color: var(--c-accent);
+}
+.resumo_fn_boxed_list .item_top span{
+	color: var(--c-text-2);
+}
+
+/* Right panel */
+.resumo_fn_right{
+	background-color: var(--c-bg-deep);
+	border-left-color: var(--c-border);
+}
+.resumo_fn_right .border1,
+.resumo_fn_right .border2{
+	border-color: var(--c-line);
+}
+.resumo_fn_right:hover .border1,
+.resumo_fn_right:hover .border2{
+	border-color: var(--c-muted);
+}
+.resumo_fn_right .title_holder h5,
+.resumo_fn_right .right_bottom a{
+	color: var(--c-text-2);
+}
+.resumo_fn_right .right_bottom a:hover{
+	color: var(--c-text);
+}
+.resumo_fn_right .right_bottom .circle{
+	background-color: var(--c-accent);
+}
+.animated_title:before,
+.animated_title:after{
+	color: var(--c-accent);
+}
+.resumo_fn_right .right_bottom a:before{
+	background-color: var(--c-line);
+}
+.resumo_fn_right .right_bottom a:hover:before{
+	background-color: var(--c-muted);
+}
+@media(max-width: 1040px){
+	.resumo_fn_right .menu_trigger{
+		background-color: var(--c-surface);
+		border-color: var(--c-border);
+	}
+}
+
+/* Slide-in navigation */
+.resumo_fn_navigation{
+	background-color: var(--c-bg-deep);	/* same as the right panel */
+	border-left: 1px solid var(--c-border);
+}
+.resumo_fn_navigation .closer:before,
+.resumo_fn_navigation .closer:after{
+	background-color: var(--c-muted);
+}
+.resumo_fn_navigation .closer:hover:before,
+.resumo_fn_navigation .closer:hover:after{
+	background-color: var(--mc);
+}
+#nav .label{
+	color: var(--c-text-2);
+}
+/* Faster open: panel + overlay 1s → .45s, links and socials .5s → .35s.
+   The link stagger / socials delay live in init.js (rightNav). */
+.resumo_fn_navigation,
+.resumo_fn_nav_overlay{
+	transition-duration: .45s;
+	transition-timing-function: cubic-bezier(.2,.8,.2,1);
+}
+#nav ul li,
+.resumo_fn_navigation .nav_footer{
+	transition-duration: .35s;
+}
+#nav ul a,
+.resumo_fn_navigation .copyright a,
+.resumo_fn_right .menu_trigger,
+.fn__nav a{
+	color: var(--c-text);
+}
+.resumo_fn_right .menu_trigger .hamb span{
+	background-color: var(--c-text);
+}
+.resumo_fn_navigation .social a{
+	color: var(--c-text);
+	background-color: var(--c-line);
+}
+.resumo_fn_navigation .social a:hover{
+	background-color: var(--c-accent);
+}
+.resumo_fn_navigation .copyright a:before{
+	background-color: var(--c-line);
+}
+.resumo_fn_navigation .copyright a:hover:before{
+	background-color: var(--c-accent);
+}
+
+/* Footer */
+#footer .footer_top:before,
+#footer .footer_top:after{
+	background-color: var(--c-line);
+}
+.resumo_fn_totop span{
+	background-color: var(--c-muted);
+}
+
+/* Project modal */
+.resumo_fn_modalbox{
+	background-color: rgba(9,9,9,.95);	/* #090909 at 95% */
+}
+.resumo_fn_modalbox .box_inner{
+	background-color: var(--c-surface);
+	border-color: var(--c-border);
+}
+.resumo_fn_modalbox .closer span:before,
+.resumo_fn_modalbox .closer span:after,
+.fn__nav .arrow{
+	background-color: var(--c-muted);
+}
+.fn__nav{
+	border-top-color: var(--c-line);
+}
+.fn__nav:after{
+	background-color: var(--c-line);
+}
+.resumo_fn_modalbox .modal_content::-webkit-scrollbar-thumb{
+	border-color: var(--c-surface);
+}
+
+/* Magic cursor */
+.cursor-outer .fn-cursor{
+	border-color: var(--c-muted);
+}
+.cursor-inner .fn-cursor{
+	background-color: var(--c-accent);
+}
+
+/* Light version: lime is too pale on white, so the darker green leads */
+body.light{
+	--mc: var(--c-accent);
+}
+
+
+/*------------------------------------------------------------------*/
+/*	01) Typography
+/*------------------------------------------------------------------*/
+/* Form controls and buttons don't inherit font-family by default */
+body,
+button,
+input,
+select,
+textarea{
+	font-family: 'Google Sans', Arial, Helvetica, sans-serif;
+}
+
+
+/*------------------------------------------------------------------*/
+/*	02) About table
+/*	The template styled two <th> cells per row; the markup now uses
+/*	<th scope="row"> for the label and <td> for the value.
+/*------------------------------------------------------------------*/
+.resumo_fn_about_info table td{
+	border: none;
+	padding: 9px 10px 9px 0;
+	font-size: 18px;
+	letter-spacing: 0;
+	color: var(--c-text);
+	font-weight: 400;
+	text-align: left;
+}
+.resumo_fn_about_info table th{
+	text-align: left;
+	width: 160px;
+}
+
+
+/* Boxed list items have no description paragraph, so the role
+   heading is the last element and needs no bottom gap */
+.resumo_fn_boxed_list .item > *:last-child{
+	margin-bottom: 0;
+}
+
+
+/*------------------------------------------------------------------*/
+/*	03) Software list
+/*------------------------------------------------------------------*/
+.resumo_fn_soft_list{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 20px;
+}
+.resumo_fn_soft_list li{
+	margin: 0;
+	position: relative;
+	padding: 28px 30px;
+	background-color: var(--c-surface);
+	border: 1px solid var(--c-border);
+	color: var(--c-text);
+	font-size: 18px;
+}
+/* Same accent bar as the boxed list items */
+.resumo_fn_soft_list li:after{
+	content: '';
+	position: absolute;
+	width: 3px;
+	height: 30px;
+	left: -1px;
+	top: 50%;
+	margin-top: -15px;
+	background-color: var(--mc);
+}
+
+
+/*------------------------------------------------------------------*/
+/*	04) Contact information
+/*	No contact form on this site, so drop the offset that aligned
+/*	the info block with the form.
+/*------------------------------------------------------------------*/
+address.resumo_fn_contact_info{
+	font-style: normal;
+	padding-top: 0;
+}
+.resumo_fn_contact_info h3{
+	max-width: 100%;
+	margin-bottom: 40px;
+}
+
+
+/*------------------------------------------------------------------*/
+/*	05) Magic cursor
+/*	Hide the native pointer so only the two following circles show.
+/*	Limited to mouse devices wider than 1040px — the same breakpoint
+/*	at which style.css hides the circles — so a pointer is never lost.
+/*------------------------------------------------------------------*/
+@media (min-width: 1041px) and (pointer: fine){
+	html,
+	body,
+	body *{
+		cursor: none !important;
+	}
+}
+
+
+/*------------------------------------------------------------------*/
+/*	06) Portfolio
+/*	Behance project covers in the same 3-column, 4:5 grid as Motion and
+/*	Posters (2 columns on phones). Covers are landscape, so they are
+/*	centre-cropped into the portrait box. Clicking a card opens the
+/*	template's modal box (init.js) with that project's images.
+/*------------------------------------------------------------------*/
+#portfolio{
+	padding-bottom: 50px;
+}
+#portfolio .resumo_fn_main_title{
+	padding-right: 0;
+}
+.resumo_fn_portfolio_grid ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 40px 20px;
+}
+.resumo_fn_portfolio_grid li{
+	margin: 0;
+	padding: 0;
+}
+/* Covers are real <img> tags (the template used a hidden square
+   thumb + background image), so undo the template's thumb rules */
+#portfolio .resumo_fn_portfolio_grid .img_holder{
+	aspect-ratio: 4 / 5;
+	background-color: var(--c-surface);
+	border: 1px solid var(--c-border);
+	transition: border-color .3s ease;
+}
+#portfolio .resumo_fn_portfolio_grid .item:hover .img_holder{
+	border-color: var(--mc);
+}
+#portfolio .resumo_fn_portfolio_grid .img_holder img{
+	display: block;
+	width: 100%;
+	height: 100%;
+	max-height: none;
+	margin: 0;
+	object-fit: cover;
+	opacity: 1 !important;
+	transition: transform .6s ease;
+}
+#portfolio .resumo_fn_portfolio_grid .item:hover .img_holder img{
+	transform: scale(1.05);
+}
+#portfolio .resumo_fn_portfolio_grid .title_holder{
+	padding-top: 18px;
+}
+#portfolio .resumo_fn_portfolio_grid .title_holder p{
+	margin: 0 0 6px;
+	font-size: 14px;
+	color: var(--mc);
+}
+#portfolio .resumo_fn_portfolio_grid .title_holder h3{
+	font-size: 20px;
+}
+@media(max-width: 600px){
+	.resumo_fn_portfolio_grid ul{grid-template-columns: repeat(2, minmax(0, 1fr));gap: 30px 14px;}
+}
+
+/* Project modal content */
+.resumo_fn_modalbox .fn__cat{
+	color: var(--mc);
+}
+.resumo_fn_modalbox .fn__title{
+	margin-bottom: 24px;
+}
+.resumo_fn_modalbox .fn__meta{
+	list-style-type: none;
+	margin: 0 0 36px;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 40px;
+	font-size: 16px;
+	color: var(--c-text);
+}
+.resumo_fn_modalbox .fn__meta li{
+	margin: 0;
+}
+.resumo_fn_modalbox .fn__meta span{
+	display: block;
+	font-size: 13px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	color: var(--c-text-2);
+	margin-bottom: 2px;
+}
+.resumo_fn_modalbox .fn__desc{
+	margin-bottom: 36px;
+}
+.resumo_fn_modalbox .fn__gallery img{
+	display: block;
+	width: 100%;
+	height: auto;
+}
+.resumo_fn_modalbox .fn__behance{
+	display: inline-block;
+	margin-top: 40px;
+	padding: 14px 28px;
+	border: 1px solid var(--mc);
+	color: var(--mc);
+	text-decoration: none;
+	font-size: 15px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: all .3s ease;
+}
+.resumo_fn_modalbox .fn__behance:hover{
+	background-color: var(--c-accent);
+	border-color: var(--c-accent);
+	color: #ffffff;
+}
+/*------------------------------------------------------------------*/
+/*	07) Clients
+/*	White SVG logos (exported from "Companies logo.ai") in a 4-column
+/*	grid (2 columns on phones). Each logo is fitted into the same box
+/*	so wide and tall marks read at a similar visual size.
+/*------------------------------------------------------------------*/
+#clients{
+	padding: 150px 0 0;
+}
+#clients .resumo_fn_main_title{
+	margin-bottom: 70px;
+}
+/* Section labels (About Me, Clients, Portfolio, Contact) stand alone:
+   no big white title, label enlarged 1.5× (18px → 27px) with the same
+   orange underline the template drew under the big titles */
+#about .resumo_fn_main_title .subtitle,
+#clients .resumo_fn_main_title .subtitle,
+#portfolio .resumo_fn_main_title .subtitle,
+#contact .resumo_fn_main_title .subtitle{
+	font-size: 27px;
+	position: relative;
+	padding-bottom: 15px;
+	display: inline-block;	/* shrink to the text so the underline matches its length */
+}
+#about .resumo_fn_main_title .subtitle:after,
+#clients .resumo_fn_main_title .subtitle:after,
+#portfolio .resumo_fn_main_title .subtitle:after,
+#contact .resumo_fn_main_title .subtitle:after{
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: calc(100% - 1px);	/* full text width, minus the trailing letter-spacing */
+	height: 2px;
+	background-color: var(--mc);
+}
+.resumo_fn_clients ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 1px;
+	background-color: var(--c-border);	/* shows through the gaps as grid lines */
+	border: 1px solid var(--c-border);
+}
+.resumo_fn_clients li{
+	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 150px;
+	padding: 28px 22px;
+	background-color: var(--c-bg);
+}
+/* Logo box is 90% of the original size (64px → 57.6px, full width → 90%),
+   so wide marks limited by width and tall marks limited by height
+   both shrink by 10% */
+.resumo_fn_clients img{
+	display: block;
+	max-width: 90%;
+	max-height: 57.6px;
+	width: auto;
+	height: auto;
+	opacity: .7;
+	transition: opacity .3s ease, transform .3s ease;
+}
+.resumo_fn_clients li:hover img{
+	opacity: 1;
+	transform: scale(1.06);
+}
+@media(max-width: 1040px){
+	#clients{padding-top: 100px;}
+}
+@media(max-width: 768px){
+	.resumo_fn_clients ul{grid-template-columns: repeat(2, minmax(0, 1fr));}
+	.resumo_fn_clients li{height: 120px;}
+	.resumo_fn_clients img{max-height: 46.8px;}	/* 52px − 10% */
+}
+/* The portfolio follows straight after the logos */
+#clients + #portfolio{
+	padding-top: 120px;
+}
+
+
+/*------------------------------------------------------------------*/
+/*	08) Portfolio filter + Motion / Posters items
+/*	Branding, Motion and Posters share one 3-column 4:5 grid inside
+/*	Portfolio; the tabs (js/custom.js) hide items by data-cat.
+/*	.ph_box is a placeholder; real items will put a cover <img> there.
+/*------------------------------------------------------------------*/
+/* Filter tabs sit between the PORTFOLIO label and the grid */
+#portfolio .resumo_fn_main_title{
+	margin-bottom: 50px;
+}
+.resumo_fn_portfolio_filter .tab_header{
+	margin-bottom: 50px;
+}
+.resumo_fn_portfolio_grid > ul > li.is-hidden,
+.resumo_fn_portfolio_grid > ul > li.is-collapsed{
+	display: none;
+}
+
+/* "Show more" — reveals the next 6 items of the active tab */
+.fn_show_more{
+	display: flex;
+	justify-content: center;
+	margin-top: 50px;
+}
+.fn_show_more button{
+	display: inline-flex;
+	align-items: center;
+	gap: 14px;
+	padding: 16px 34px;
+	border: 1px solid var(--c-line);
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--c-text);
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: border-color .3s ease, color .3s ease;
+}
+.fn_show_more .count{
+	color: var(--c-text-2);
+	font-weight: 400;
+	transition: color .3s ease;
+}
+.fn_show_more button:hover,
+.fn_show_more button:focus-visible{
+	border-color: var(--mc);
+	color: var(--mc);
+	outline: none;
+}
+.fn_show_more button:hover .count{
+	color: var(--mc);
+}
+.resumo_fn_portfolio_grid > ul > li.is-shown{
+	animation: fn_filter_in .45s ease both;
+}
+@keyframes fn_filter_in{
+	from{opacity: 0; transform: translateY(14px);}
+	to{opacity: 1; transform: none;}
+}
+.resumo_fn_media_grid ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 40px 20px;
+}
+.resumo_fn_media_grid li{
+	margin: 0;
+	padding: 0;
+}
+.resumo_fn_media_grid .ph_box{
+	position: relative;
+	aspect-ratio: 4 / 5;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+	background-color: var(--c-surface);
+	border: 1px solid var(--c-border);
+	color: var(--c-muted);
+	transition: border-color .3s ease, color .3s ease;
+}
+.resumo_fn_media_grid .ph_icon{
+	width: 44px;
+	height: 44px;
+	transition: transform .3s ease;
+}
+.resumo_fn_media_grid .ph_size{
+	font-size: 13px;
+	letter-spacing: 1px;
+}
+.resumo_fn_media_grid .item:hover .ph_box{
+	border-color: var(--mc);
+	color: var(--mc);
+}
+.resumo_fn_media_grid .item:hover .ph_icon{
+	transform: scale(1.1);
+}
+.resumo_fn_media_grid .title_holder{
+	padding-top: 18px;
+}
+.resumo_fn_media_grid .title_holder p{
+	margin: 0 0 6px;
+	font-size: 14px;
+	color: var(--mc);
+}
+.resumo_fn_media_grid .title_holder h3{
+	margin: 0;
+	font-size: 20px;
+	font-weight: 400;
+}
+@media(max-width: 600px){
+	.resumo_fn_media_grid ul{grid-template-columns: repeat(2, minmax(0, 1fr));gap: 30px 14px;}
+}
+
+
+/*------------------------------------------------------------------*/
+/*	09) Poster lightbox
+/*	Built and positioned by js/custom.js (posterLightbox). The image is
+/*	placed at its final size; the open/close zoom is a transform from
+/*	the grid card, so only transform/opacity animate.
+/*------------------------------------------------------------------*/
+html.fn_lb_lock,
+html.fn_lb_lock body{
+	overflow: hidden;
+}
+.fn_lightbox{
+	position: fixed;
+	inset: 0;
+	z-index: 9000;	/* above the slide-in menu (999), below the magic cursor */
+	visibility: hidden;
+	pointer-events: none;
+}
+.fn_lightbox.is-open{
+	visibility: visible;
+	pointer-events: auto;
+}
+.fn_lb_backdrop{
+	position: absolute;
+	inset: 0;
+	background-color: rgba(0,0,0,.7);
+	-webkit-backdrop-filter: blur(14px);
+	backdrop-filter: blur(14px);
+	opacity: 0;
+	transition: opacity .45s ease;
+}
+.fn_lightbox.is-active .fn_lb_backdrop{
+	opacity: 1;
+}
+.fn_lb_img{
+	position: fixed;
+	left: 0;
+	top: 0;
+	display: block;
+	object-fit: contain;
+	transform-origin: 0 0;
+	will-change: transform, opacity;
+	box-shadow: 0 30px 80px rgba(0,0,0,.55);
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+.fn_lb_img.is-animating{
+	transition: transform .55s cubic-bezier(.2,.8,.2,1), opacity .2s ease;
+}
+
+/* Vimeo player, placed exactly over the cover; fades in when loaded */
+.fn_lb_video{
+	position: fixed;
+	z-index: 1;
+	display: block;
+	border: 0;
+	background-color: #000;
+	opacity: 0;
+	transition: opacity .35s ease;
+}
+.fn_lb_video.is-ready{
+	opacity: 1;
+}
+/* Magic cursor hides while the pointer is over the Vimeo player
+   (the page can't track the mouse inside that frame) */
+.frenify-cursor.is-off{
+	opacity: 0 !important;
+	transition: opacity .2s ease;
+}
+
+/* Play badge on Motion cards */
+.resumo_fn_portfolio_grid .img_holder{
+	position: relative;
+}
+.fn_play{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 58px;
+	height: 58px;
+	margin: -29px 0 0 -29px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	border: 1px solid rgba(255,255,255,.35);
+	background-color: rgba(16,16,16,.55);
+	color: #ffffff;
+	pointer-events: none;
+	transition: background-color .3s ease, border-color .3s ease, transform .3s ease;
+}
+.fn_play svg{
+	width: 20px;
+	height: 20px;
+	margin-left: 3px;	/* optical centre of the triangle */
+	fill: currentColor;
+}
+.resumo_fn_portfolio_grid .item:hover .fn_play{
+	background-color: var(--mc);
+	border-color: var(--mc);
+	transform: scale(1.08);
+}
+
+/* Arrows, caption and close button fade in once the zoom is under way */
+.fn_lb_ui{
+	opacity: 0;
+	transition: opacity .25s ease;
+}
+.fn_lightbox.is-active .fn_lb_ui{
+	opacity: 1;
+	transition-delay: .2s;
+}
+.fn_lb_arrow,
+.fn_lb_close{
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	border-radius: 50%;
+	border: 1px solid rgba(255,255,255,.18);
+	background-color: rgba(16,16,16,.55);
+	color: #ffffff;
+	transition: background-color .25s ease, border-color .25s ease, transform .25s ease;
+}
+.fn_lb_arrow{
+	width: 56px;
+	height: 56px;
+}
+.fn_lb_arrow svg{
+	width: 22px;
+	height: 22px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.6;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.fn_lb_arrow:hover,
+.fn_lb_arrow:focus-visible,
+.fn_lb_close:hover,
+.fn_lb_close:focus-visible{
+	background-color: var(--mc);
+	border-color: var(--mc);
+	outline: none;
+}
+.fn_lb_arrow:hover{
+	transform: scale(1.06);
+}
+.fn_lb_close{
+	top: 24px;
+	right: 24px;
+	width: 48px;
+	height: 48px;
+}
+.fn_lb_close span,
+.fn_lb_close span:before{
+	position: relative;
+	display: block;
+	width: 18px;
+	height: 1.6px;
+	background-color: currentColor;
+	transform: rotate(45deg);
+}
+.fn_lb_close span:before{
+	content: '';
+	position: absolute;
+	transform: rotate(90deg);
+}
+.fn_lb_caption{
+	position: fixed;
+	left: 0;
+	right: 0;
+	margin: 0;
+	text-align: center;
+	font-size: 16px;
+	color: #ffffff;
+}
+.fn_lb_count{
+	margin-left: 14px;
+	font-size: 14px;
+	letter-spacing: 1px;
+	color: var(--c-text-2);
+}
+@media(max-width: 767px){
+	.fn_lb_arrow{width: 44px;height: 44px;}
+	.fn_lb_close{top: 14px;right: 14px;}
+	.fn_lb_caption{font-size: 14px;}
+}
+@media (prefers-reduced-motion: reduce){
+	.fn_lb_img.is-animating{transition-duration: .01s;}
+}
+
+
+/*------------------------------------------------------------------*/
+/*	10) Light version
+/*------------------------------------------------------------------*/
+body.light .resumo_fn_media_grid .ph_box{background-color: #fafafa;border-color: #ddd;color: #999;}
+body.light .fn_show_more button{color: #000;border-color: #ddd;}
+body.light .fn_show_more button:hover{color: var(--mc);border-color: var(--mc);}
+/* Logos are white; invert them to black on the white background */
+body.light .resumo_fn_clients img{filter: invert(1);}
+body.light .resumo_fn_clients ul{background-color: #ddd;border-color: #ddd;}
+body.light .resumo_fn_clients li{background-color: #fff;}
+body.light .resumo_fn_about_info table td{color: #000;}
+body.light .resumo_fn_soft_list li{background-color: #fafafa;border-color: #ddd;color: #000;}
+body.light #portfolio .resumo_fn_portfolio_grid .img_holder{background-color: #eee;}
+body.light .resumo_fn_right{background-color: transparent;}
+body.light .resumo_fn_modalbox .fn__meta{color: #000;}
+body.light .resumo_fn_modalbox .fn__behance:hover{color: #fff;}
+@media(max-width: 1040px){body.light .resumo_fn_right .menu_trigger{background-color: #fafafa;border-color: #ddd;}}
