@@ -361,7 +361,21 @@
 		});
 	}
 
+	/* Phones: tab rows scroll sideways when they don't fit (css/custom.css);
+	   keep the tapped tab fully in view. Horizontal only, so the page
+	   itself never jumps. */
+	function tabsKeepActiveInView(){
+		$('.resumo_fn_tabs .tab_header a').on('click', function(){
+			var li = this.parentNode, ul = li.parentNode;
+			if(ul.scrollWidth <= ul.clientWidth){ return; }
+			var left = li.offsetLeft - ul.offsetLeft, right = left + li.offsetWidth;
+			if(left < ul.scrollLeft){ ul.scrollTo({ left: left, behavior: 'smooth' }); }
+			else if(right > ul.scrollLeft + ul.clientWidth){ ul.scrollTo({ left: right - ul.clientWidth, behavior: 'smooth' }); }
+		});
+	}
+
 	$(function(){
+		tabsKeepActiveInView();
 		portfolioFilter();
 		modalNavFollowsFilter();
 		posterLightbox();
