@@ -117,6 +117,40 @@ h1>a,h2>a,h3>a,h4>a,h5>a,h6>a{
 	flex-shrink: 0;
 	background-color: var(--c-muted);
 }
+/* Phones: keep the tabs on ONE line like desktop. Smaller type and
+   tighter dots make all three fit from ~360px up; on narrower screens
+   the row scrolls sideways (no scrollbar) and js/custom.js scrolls
+   the active tab into view. Each tab keeps a ≥44px tap target. */
+@media(max-width: 600px){
+	.resumo_fn_tabs .tab_header{
+		margin-bottom: 28px;
+	}
+	.resumo_fn_tabs .tab_header ul{
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+	}
+	.resumo_fn_tabs .tab_header ul::-webkit-scrollbar{
+		display: none;
+	}
+	.resumo_fn_tabs .tab_header li{
+		flex-shrink: 0;
+		margin-bottom: 0;
+	}
+	.resumo_fn_tabs .tab_header a{
+		font-size: 20px;
+		line-height: 26px;
+		padding: 12px 0 6px;	/* 44px tap height, underline stays close to the text */
+		white-space: nowrap;
+	}
+	.resumo_fn_tabs .tab_header li:after{
+		width: 4px;
+		height: 4px;
+		margin: 2px 12px 0;
+	}
+}
 .resumo_fn_boxed_list .item{
 	background-color: var(--c-surface);
 	border-color: var(--c-border);
