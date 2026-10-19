@@ -350,6 +350,8 @@
 	function refreshVimeoCovers(){
 		$('#portfolio .lb_item[data-vimeo]').each(function(){
 			var item	= this;
+			// hand-picked local frame (img/motion/) wins over Vimeo's thumbnail
+			if(item.querySelector('.img_holder img').getAttribute('src').indexOf('vimeocdn') < 0){ return; }
 			var id		= item.getAttribute('data-vimeo');
 			$.getJSON('https://vimeo.com/api/oembed.json?width=960&url=' + encodeURIComponent('https://vimeo.com/' + id))
 				.done(function(data){
